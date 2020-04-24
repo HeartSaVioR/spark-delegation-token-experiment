@@ -2,13 +2,13 @@ name := "spark-delegation-token-experiment"
 
 version := "0.1"
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.12.10"
 
 resolvers += Resolver.mavenLocal
 resolvers ++= List("Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository")
 
-val scalaVersionForMaven = "2.11"
-val sparkVersion = "2.4.0"
+val scalaVersionForMaven = "2.12"
+val sparkVersion = "3.1.0-SNAPSHOT"
 val scopeForSparkArtifacts = "provided"
 
 libraryDependencies += "org.apache.spark" % s"spark-sql_${scalaVersionForMaven}" % sparkVersion % scopeForSparkArtifacts

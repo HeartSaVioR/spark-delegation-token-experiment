@@ -6,8 +6,8 @@ import org.apache.hadoop.fs.{FileSystem, Path}
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.streaming.OutputMode
-import org.apache.spark.deploy.SparkHadoopUtil
 import org.apache.spark.internal.Logging
+import org.apache.spark.SparkHadoopUtilHack
 
 /**
  * This example reads the config from HDFS "before" initializing Spark Session
@@ -27,7 +27,7 @@ object LongRunningAppWithHDFSConfig extends Logging {
     logInfo(s"Config file path: $hdfsConfigFilePath")
     logInfo(s"Checkpoint path: $checkpointPath")
 
-    val fs = FileSystem.get(SparkHadoopUtil.get.conf)
+    val fs = FileSystem.get(SparkHadoopUtilHack.conf)
     val is = fs.open(new Path(hdfsConfigFilePath))
     val groupModRange = try {
       Source.fromInputStream(is)(Codec.UTF8).getLines().next().toInt
@@ -55,7 +55,7 @@ object LongRunningAppWithHDFSConfig extends Logging {
 
     val query = df.writeStream
       .format("console")
-      .outputMode(OutputMode.Update())
+      .outputMode(OutputMode.Complete())
       .option("checkpointLocation", checkpointPath)
       .start()
 
